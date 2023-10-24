@@ -2,11 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-   padding: 0;
-   margin: 0;
-   box-sizing: border-box;
+@layer base {
+   body {
+      @apply bg-slate-900 font-body;
+   }
 }
-html {
-   font-size: 14px;
+@layer components {
+   .page-container {
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 15px;
+   }
+   .banner .swiper {
+      height: 100%;
+   }
+   .hidden-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+   }
 }
