@@ -1,16 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { apiKey, fetcher } from "../config";
+import { fetcher, tmbdApi } from "../config";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard from "../components/movies/MovieCard";
 
 const MovieDetailPage = () => {
    const { id } = useParams();
-   let { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`,
-      fetcher
-   );
+   let { data } = useSWR(tmbdApi.getMovieDetail(id), fetcher);
 
    if (!data) return null;
    let { backdrop_path, poster_path, title, genres, overview } = data;
@@ -19,14 +16,14 @@ const MovieDetailPage = () => {
          <div className="relative w-full h-[600px]">
             <div className="absolute w-full h-full bg-black bg-opacity-50 insert-0 "></div>
             <img
-               src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+               src={tmbdApi.getImg(backdrop_path, "original")}
                alt=""
                className="object-cover w-full h-full "
             />
          </div>
          <div className="w-full h-[400px] max-w-[800px] mx-auto -translate-y-2/4 rounded-lg relative z-10 mb-10">
             <img
-               src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+               src={tmbdApi.getImg(poster_path)}
                alt=""
                className="object-cover w-full h-full rounded-lg"
             />
@@ -57,10 +54,7 @@ const MovieDetailPage = () => {
 };
 function MovieCredits() {
    const { id } = useParams();
-   let { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`,
-      fetcher
-   );
+   let { data } = useSWR(tmbdApi.getMovieInfo(id, "credits"), fetcher);
 
    if (!data) return null;
    let { cast } = data;
@@ -72,7 +66,7 @@ function MovieCredits() {
             {cast.slice(0, 4).map((item) => (
                <div className="cart-item" key={item.id}>
                   <img
-                     src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
+                     src={`${tmbdApi.getImg(item.profile_path)}`}
                      className="w-full h-[350px] object-cover rounded-lg"
                   />
                   <span className="inline-block mt-4 text-xl text-white">
@@ -86,10 +80,7 @@ function MovieCredits() {
 }
 function MovieVideo() {
    const { id } = useParams();
-   let { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`,
-      fetcher
-   );
+   let { data } = useSWR(tmbdApi.getMovieInfo(id, "videos"), fetcher);
    if (!data) return null;
    let { results } = data;
    if (!results || results.length <= 0) return null;
@@ -112,10 +103,7 @@ function MovieVideo() {
 }
 function MovieSimilar() {
    const { id } = useParams();
-   let { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`,
-      fetcher
-   );
+   let { data } = useSWR(tmbdApi.getMovieInfo(id, "similar"), fetcher);
 
    if (!data) return null;
    let { results } = data;

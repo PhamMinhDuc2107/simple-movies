@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../button/Button";
+import { tmbdApi } from "../../config";
 
 const BannerItem = ({ item }) => {
    const { title, poster_path, id } = item;
@@ -8,7 +10,7 @@ const BannerItem = ({ item }) => {
       <div className="relative w-full h-full bg-white rounded-lg">
          <div className="absolute z-[1] inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.8)] to-transparent rounded-lg"></div>
          <img
-            src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+            src={tmbdApi.getImg(poster_path, "original")}
             alt={title}
             className="object-cover w-full h-full rounded-lg"
          />
@@ -25,12 +27,9 @@ const BannerItem = ({ item }) => {
                   Adventure
                </div>
             </div>
-            <button
-               onClick={() => navigate(`/movies/${id}`)}
-               className="px-6 py-3 mb-5 font-medium rounded-lg bg-primary"
-            >
+            <Button onClick={() => navigate(`/movies/${id}`)} className="mb-10">
                Watch now
-            </button>
+            </Button>
          </div>
       </div>
    );
